@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "CMSC100 Exer10",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start" : "nodemone "
+    "start": "nodemon src/server.js"
   },
   "author": "Michael Jay Makiling",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mongoose": "^6.2.4"
+    "mongoose": "^6.2.4",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
