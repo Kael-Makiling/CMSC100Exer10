@@ -1,8 +1,10 @@
 :root {
   --font-family-headers: "Oswald";
   --font-family-text: "Roboto";
+  --font-family-text2: "Open Sans";
 
   --color-light: #f6ece1;
   --color-dark: #4f4a47;
   --color-normal: white;
+  --color-error: #9b1306;
 }

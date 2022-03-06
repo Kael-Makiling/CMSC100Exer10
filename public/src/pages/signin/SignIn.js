@@ -2,6 +2,7 @@ import React from 'react'
 import './signin.css';
 import coffee from "../../assets/coffee.png";
 import { useNavigate } from 'react-router-dom';
+import Buttons from '../../components/buttons/buttons';
 const SignIn = () => {
   let navigate = useNavigate();
 
@@ -13,17 +14,17 @@ const SignIn = () => {
                 <h1 className='header1'> SIGN IN </h1>
                 <input className="box" type="text" id="email" placeholder="Email"></input>
                 <input className="box" type="text" id="password" placeholder="Password"></input>
-                <button type="button" className='button2'>LOG IN</button>
+                <Buttons>LOG IN</Buttons>
             </div>
             <div className='secondPart'>
                 <h1 className='header2'> WELCOME BACK </h1>
                 <p>Still not a member?</p>
                 <p>Don’t worry, signing up is free.</p>
-                <button type="button" className='button2'
+                <Buttons
                   onClick={() => {
                     navigate('/sign-up');
                   }}
-                >SIGN IN</button>
+                >SIGN IN</Buttons>
             </div>
         </div>
     </div>

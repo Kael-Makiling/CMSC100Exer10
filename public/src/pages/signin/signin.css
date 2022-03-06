@@ -22,7 +22,7 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.firstPart-signup {
+.firstPart {
   display: flex;
   width: 50%;
   align-items: center;
@@ -34,18 +34,10 @@
   border-bottom-left-radius: 15px;
 
   height: 500px;
-  background: linear-gradient(
-      to right,
-      rgba(79, 74, 71, 0.3),
-      rgba(79, 74, 71, 0.3)
-    ),
-    url("../../assets/coffeebg2.jpg");
-  opacity: 0.9;
-  background-size: cover;
-  background-position: center center;
+  background: var(--color-normal);
 }
 
-.secondPart-signup {
+.secondPart {
   display: flex;
   width: 50%;
   align-items: center;
@@ -57,7 +49,15 @@
   border-bottom-right-radius: 15px;
 
   height: 500px;
-  background: white;
+  background: linear-gradient(
+      to right,
+      rgba(79, 74, 71, 0.3),
+      rgba(79, 74, 71, 0.3)
+    ),
+    url("../../assets/coffeebg1.jpg");
+  opacity: 0.9;
+  background-size: cover;
+  background-position: center center;
 }
 
 .header1 {
@@ -65,7 +65,7 @@
   font-weight: normal;
   font-size: 32px;
   margin-bottom: -5px;
-  color: #4f4a47;
+  color: var(--color-dark);
 }
 
 .header2 {
@@ -73,7 +73,7 @@
   font-weight: normal;
   font-size: 32px;
 
-  color: #ffffff;
+  color: var(--color-normal);
 }
 
 p {
@@ -81,31 +81,15 @@ p {
 
   margin-top: -12px;
   font-size: 14px;
-  color: #ffffff;
+  color: var(--color-normal);
   font-family: Roboto;
-}
-
-.button2 {
-  margin-top: 5px;
-  cursor: pointer;
-  font-family: Roboto;
-  font-size: 12px;
-  color: black;
-  background-color: #d6c1ae;
-  font-family: Roboto;
-  border-radius: 20px;
-  width: 125px;
-  height: 30px;
-
-  border: none;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 input {
   font-family: Roboto;
   font-weight: normal;
 
-  border-color: #4f4a47;
+  border-color: var(--color-dark);
   border-width: 0.5px;
 
   width: 170px;
@@ -114,18 +98,8 @@ input {
   margin: 8px 0;
 }
 
-input[type="text"]:focus {
-  background-color: #f6ece1;
-  border-width: 1px;
-}
-
 .coffee {
   margin-bottom: -15px;
   height: 60px;
   width: 60px;
-}
-
-hr.new1 {
-  border-top: 1px solid #4f4a47;
-  width: 300px;
 }

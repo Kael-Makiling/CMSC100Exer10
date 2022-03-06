@@ -5,12 +5,12 @@ import bcrypt from 'bcryptjs';
 const UserSchema = new mongoose.Schema({
     firstName:  {
         type: String,
-        required: [true, "Please provide your first name"],
+        required: [true, "Please put a First Name."],
         trim: true
     },
     lastName: {
         type: String,
-        required: [true, "Please provide your last name"],
+        required: [true, "Please put a Last Name."],
         trim: true
     },
     email : {
@@ -19,12 +19,12 @@ const UserSchema = new mongoose.Schema({
         validate: {
             validator: validator.isEmail,
         },
-        required: [true, "Please provide an email"],
+        required: [true, "Please provide an email."],
         trim: true
     },
     password :  {
         type: String,
-        required: [true, "Please provide a password"],
+        required: [true, "Please provide a password."],
         trim: true,
         select : false
     },
