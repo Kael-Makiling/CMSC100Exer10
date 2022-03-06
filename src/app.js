@@ -1,6 +1,5 @@
 import express from "express";
 import useRouter from "./router/user.router.js";
-
 //Initialize app
 const app = express();
 
