@@ -1,16 +1,14 @@
 import React from 'react'
 import "./sidebar.css";
-import Profilebox from '../profilebox/Profilebox';
-import Stats from '../stats/Stats';
-import Friend from '../addfriend/Friends';
-import Friendrequest from '../friendrequest/Friendrequest';
+
+import { Profilebox, Stats, Addfriend, Friendrequest } from '../../components'
 const Sidebar = () => {
   return (
     <div className='sidebar-container'>
         <div className='sidebar-wrapper'>
             <Profilebox />
             <Stats />
-            <Friend />
+            <Addfriend />
             <Friendrequest />
         </div>
     </div>

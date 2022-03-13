@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './signup.css';
 import coffee from "../../assets/coffee.png";
+import Buttons from '../../components/buttons/Buttons';
 import { useNavigate } from 'react-router-dom';
-import Buttons from '../../components/buttons/buttons';
 import {useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSignUpSchema } from '../../assets/schema';

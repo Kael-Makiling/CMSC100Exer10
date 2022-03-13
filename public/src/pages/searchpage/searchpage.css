@@ -1,8 +1,8 @@
-.home-container {
+.search-container {
   overflow: hidden;
 }
 
-.home-wrapper {
+.search-wrapper {
   display: flex;
   flex-direction: row;
 
@@ -10,26 +10,38 @@
   margin: 0px;
 }
 
-.home-left {
+.search-left {
   display: flex;
 
   margin: 0px;
 }
 
-.home-middle {
+.search-middle {
   display: flex;
   flex-direction: column;
+  justify-content: left;
 
   margin: 0px;
+  width: 700px;
 }
 
-.home-right {
+.search-middle-friendbox {
+  display: flex;
+  flex-direction: row;
+
+  margin-top: 20px;
+  row-gap: 20px;
+  column-gap: 20px;
+  flex-wrap: wrap;
+}
+
+.search-right {
   display: flex;
 
   margin: 0px;
 }
 
-.home-middle-text {
+.search-middle-text {
   color: var(--color-dark);
   font-weight: bold;
   letter-spacing: 7px;

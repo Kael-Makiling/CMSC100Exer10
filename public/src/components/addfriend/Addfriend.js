@@ -1,8 +1,8 @@
 import React from 'react';
-import "./friend.css";
+import "./addfriend.css";
 import Miniprofile from '../miniprofile/Miniprofile';
 import { FaUserFriends } from "react-icons/fa";
-const Friends = () => {
+const Addfriends = () => {
   return (
     <div className='sidebar-friends'>
     <div className='sidebar-friends-user'>
@@ -17,4 +17,4 @@ const Friends = () => {
   )
 }
 
-export default Friends
+export default Addfriends
