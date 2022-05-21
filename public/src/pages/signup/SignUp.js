@@ -42,7 +42,7 @@ const SignUp = () => {
             <p>and find friends.</p>
             <Buttons
               onClick={() => {
-                navigate('/sign-in');
+                navigate('/');
               }}
             >SIGN IN</Buttons>
           </div>

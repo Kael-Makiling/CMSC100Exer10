@@ -19,12 +19,14 @@
 }
 
 .sidebar-stats-number {
+  color: var(--color-dark);
   margin-top: 0.5px;
   font-size: 17px;
   font-weight: bold;
 }
 
 .sidebar-stats-text {
+  color: var(--color-dark);
   margin-bottom: -0.5px;
   font-size: 7px;
 }

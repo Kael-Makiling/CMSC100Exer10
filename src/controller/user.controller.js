@@ -1,5 +1,8 @@
 
 import UserModel from "../models/User.model.js";
+
+
+//Creates User
 export const createUser = async (req,res,next) => {
     try {
         const data = await UserModel.create(req.body);
@@ -11,6 +14,7 @@ export const createUser = async (req,res,next) => {
             email: data.email,
             friends: data.friends,
             friendRequest: data.friendRequest,
+            name: data.name,
             _id: data._id,
         });
     } catch (err) {
@@ -25,12 +29,14 @@ export const createUser = async (req,res,next) => {
     }
 }
 
+//Login User
 export const logInUser = async (req, res, next) => {
     try {
         const data = req.body;
         const user = await UserModel.findOne({email: data.email}).select(
             '+password'
         );
+        
         //Checks if Email does exist
         if (!user) throw new Error('User does not exist');
 
@@ -45,6 +51,7 @@ export const logInUser = async (req, res, next) => {
             friends: user.friends,
             friendRequest: user.friendRequest,
             _id: user._id,
+            name: user.name,
         })
     } catch (err) {
         //Default Error Code

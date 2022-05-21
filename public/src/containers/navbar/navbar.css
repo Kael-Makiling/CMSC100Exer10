@@ -17,7 +17,9 @@
 
 .navbar-wrapper {
   display: flex;
+
   align-items: center;
+  justify-content: space-around;
   flex-direction: row;
 }
 
@@ -53,7 +55,21 @@
 
 .navbar-right {
   display: flex;
+  
+  justify-content: space-around;
   align-items: center;
+  text-align: center;
+  column-gap: 30px;
+}
+
+.navbar-right p {
+  color: var(--color-dark);
+  font-family: var(--font-family-text);
+  font-size: 12px;
+  font-weight: bold;
+
+  margin-top: 13px;
+  cursor: pointer;
 }
 
 .navbar-button {
@@ -72,7 +88,6 @@
 }
 
 .dot {
-  margin-left: 20px;
   height: 25px;
   width: 25px;
   background-color: var(--color-dark);

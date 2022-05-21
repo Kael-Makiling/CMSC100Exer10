@@ -1,5 +1,6 @@
 .sidebar-friends-fullname {
   font-family: var(--font-family-text);
+  color: var(--color-dark);
   font-size: 12px;
   font-weight: bold;
   text-align: left;
@@ -11,6 +12,7 @@
 .sidebar-friends-username {
   font-size: 8px;
   font-family: var(--font-family-text);
+  color: var(--color-dark);
   font-weight: bold;
   text-align: left;
 

@@ -26,6 +26,7 @@
 
 .sidebar-friends-text {
   font-family: var(--font-family-text);
+  color: var(--color-dark);
   font-size: 12px;
   font-weight: bold;
   text-align: left;
