@@ -1,0 +1,42 @@
+.home-container {
+  overflow: hidden;
+}
+
+.home-wrapper {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-evenly;
+  margin: 0px;
+}
+
+.home-left {
+  display: flex;
+
+  margin: 0px;
+}
+
+.home-middle {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0px;
+}
+
+.home-right {
+  display: flex;
+
+  margin: 0px;
+}
+
+.home-middle-text {
+  color: var(--color-dark);
+  font-weight: bold;
+  letter-spacing: 7px;
+  font-size: 25px;
+
+  margin-top: 100px;
+  margin-bottom: 0px;
+
+  text-align: left;
+}

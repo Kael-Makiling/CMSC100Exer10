@@ -37,6 +37,7 @@
 
 .creatorbox-name-text {
   font-family: var(--font-family-text);
+  color: var(--color-dark);
   font-size: 13px;
   font-weight: bold;
   text-align: left;
@@ -48,6 +49,7 @@
 .creatorbox-username {
   font-size: 7px;
   font-family: var(--font-family-text);
+  color: var(--color-dark);
   font-weight: bold;
   text-align: left;
 
@@ -58,6 +60,7 @@
 .creatorbox-name {
   display: flex;
   flex-direction: column;
+  color: var(--color-dark);
 
   align-content: center;
   justify-content: space-between;

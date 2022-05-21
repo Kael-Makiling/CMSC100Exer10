@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserSignInSchema } from'../../assets/schema';
 import { useNavigate } from 'react-router-dom';
+import { useUserAppContext } from '../../context/UserContext';
 
 const SignIn = () => {
   let navigate = useNavigate();
@@ -14,6 +15,8 @@ const SignIn = () => {
   const [loading, setloading] = useState(false);
   const [ error, setError ] = useState('');
 
+        
+  const {signIn} = useUserAppContext();
   const submitForm = async(data) => {
     setloading(true);
     try {
@@ -24,8 +27,9 @@ const SignIn = () => {
       const user = await response.json();
 
       if (user.status === "fail") throw new Error(user.message);
+      signIn(user);
+
       
-      console.log(user)
       reset();
     } catch (err){
       console.log(error);
@@ -47,7 +51,9 @@ const SignIn = () => {
                   <p className="signin-error">{errors?.email?.message}</p>
                   <input className="box" type="password" placeholder="Password" {...register('password')}/>
                   <p className="signin-error">{errors?.password?.message}</p>
-                  <Buttons>LOG IN</Buttons>
+                  <Buttons disabled={loading}> 
+                    {loading ? "PLEASE WAIT" : "LOG IN"}
+                  </Buttons>
                 </form>
             </div>
             <div className='secondPart'>
