@@ -1,3 +1,4 @@
+import { response } from "express";
 import PostModel from "../models/Post.model.js";
 
 export const createPost = async (req,res,next) => {
@@ -22,12 +23,12 @@ export const createPost = async (req,res,next) => {
     }
 }
 
-export const deletePost = async (req,res,next) => {
+export const deletePost = async (req,res) => {
     const data = await PostModel.deleteOne(req.body.id);
     res.send(data);
 }
 
-export const editPost = async (req,res,next) => {
+export const editPost = async (req,res) => {
     var filter = {"ObjectId" : req.body.id}
     var update =  {"$set":{"content": req.body.content}}
 
@@ -48,6 +49,9 @@ export const editPost = async (req,res,next) => {
      });
 }
 
-export const getPost = async () => {
-    
+export const getPost = async (req,res) => {
+   PostModel.find().then(result => {
+       response.render("index", {data: result})
+       console.log(result)
+   })
 }

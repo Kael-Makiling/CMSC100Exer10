@@ -12,7 +12,11 @@ const Navbar = () => {
       <div className="navbar-wrapper">
         <div className="navbar-left">
             <div className='navbar-item-container'>
-                <p className="logo">Coffer</p>
+                <p className="logo"
+                onClick={() => {
+                  navigate('/home');
+                }}
+                >Coffer</p>
             </div>
         </div>
         <div className="navbar-center"> 

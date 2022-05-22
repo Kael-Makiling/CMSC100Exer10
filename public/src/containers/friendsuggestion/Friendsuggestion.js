@@ -1,6 +1,6 @@
 import React from 'react'
 import "./friendsuggestion.css"
-import { Miniprofile } from '../../components';
+import { Miniprofilesugg } from '../../components';
 import { FaUserPlus } from "react-icons/fa";
 const Friendsuggestion = () => {
   return (
@@ -11,12 +11,7 @@ const Friendsuggestion = () => {
                 <p className='friendsuggestion-text'>Friend Suggestion</p>
             </div>
             <div className='friendsuggestion-secondpart'>
-                <Miniprofile />
-                <Miniprofile />
-                <Miniprofile />
-                <Miniprofile />
-                <Miniprofile />
-                <Miniprofile />
+                <Miniprofilesugg />
             </div>
         </div>    
     </div>

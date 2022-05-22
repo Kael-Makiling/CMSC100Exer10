@@ -20,13 +20,44 @@
   margin-bottom: 0px;
 }
 
-.sidebar-friends-box {
+.sidebar-friendsfr-box {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.sidebar-friends-info{
   display: flex;
   flex-direction: row;
 
-  text-align: center;
-  margin-top: 10px;
   justify-content: space-between;
+}
+
+.sidebar-friends-buttons{
+  display: flex;
+
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.sidebar-friends-buttons p {
+  color: var(--color-dark);
+  padding-top: 20px;
+}
+
+.sidebar-friends-buttons button {
+  border-radius: 10px;
+  border-width: 0px;
+  background-color: transparent;
+  width: 60px;
+  height: 25px;
+
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--color-dark);
+  cursor: pointer;
 }
 
 .sidebar-friends-name {
@@ -40,7 +71,6 @@
 }
 
 .sidebar-friends-circle {
-
   border-radius: 50%;
   width: 20px;
   height: 20px;

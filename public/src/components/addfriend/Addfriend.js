@@ -10,6 +10,8 @@ const Addfriends = () => {
         <p className='sidebar-friends-text'>Friends</p>
     </div>
     <Miniprofile />
+    <Miniprofile />
+    <Miniprofile />
     <button className='sidebar-viewmore'>
         VIEW MORE
     </button>

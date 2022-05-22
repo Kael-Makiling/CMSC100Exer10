@@ -11,7 +11,7 @@
 
 .sidebar-profile-square {
   height: 140px;
-  width: 170px;
+  min-width: 170px;
   background-color: var(--color-light);
 
   border-radius: 10px;
@@ -22,6 +22,7 @@
   flex-direction: row;
 
   margin-top: 15px;
+  column-gap: 5px;
   align-content: center;
   justify-content: space-between;
 }
@@ -54,7 +55,6 @@
   font-weight: bold;
 
   text-align: left;
-  margin-left: -90px;
 }
 
 .sidebar-profile-text-name {
@@ -65,5 +65,4 @@
   font-weight: bold;
 
   text-align: left;
-  margin-left: -90px;
 }

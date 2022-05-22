@@ -4,6 +4,7 @@ import {useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PostSchema } from '../../assets/schema';
 import { useUserAppContext } from '../../context/UserContext';
+
 const Postbox = () => {
   const {register, handleSubmit, reset} = useForm({ resolver: yupResolver(PostSchema)});
   const {_id} =useUserAppContext();
