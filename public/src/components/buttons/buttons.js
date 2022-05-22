@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 import "./buttons.css";
-const Buttons =  ({ children, ...props }) => {
+const Buttons = ({ children, ...props }) => {
   return (
     <button className="classic-button" {...props}>
-        {children}
+      {children}
     </button>
-  )
-}
+  );
+};
 
-export default Buttons
+export default Buttons;
