@@ -1,39 +1,43 @@
-import React, { useEffect } from 'react';
+import { useEffect } from "react";
 import "./home.css";
-import { Ownpostbox, Postbox, Timelinebox } from '../../components';
-import {Creatorbox, Friendsuggestion, Navbar, Sidebar} from '../../containers';
-import { usePostAppContext } from '../../context/PostContext';
+import { Ownpostbox, Postbox, Timelinebox } from "../../components";
+import {
+  Creatorbox,
+  Friendsuggestion,
+  Navbar,
+  Sidebar,
+} from "../../containers";
+
 const Home = () => {
-  // const {Home} = usePostAppContext();
-
-  // const gettingPost = (async () => {
-
-  //     const response = await fetch("/api/get", {method: 'GET', headers: { 'Content-Type' : 'application/json'}});
-  //     const post = await response.json();
-
-  //     console.log(post)
-  // }, [])
-
-  // useEffect (()=>{
-  //   gettingPost()
-  // })
+  useEffect(async () => {
+    try {
+      const response = await fetch("/api/get", {
+        credentials: "include",
+      });
+      console.log("response", response);
+    } catch (er) {
+      console.log(er);
+    }
+    // const get = await response.json();
+    // console.log(new Date());
+  });
 
   return (
-    <div className='home-container'>
+    <div className="home-container">
       <Navbar />
-      <div className='home-wrapper'>
-        <div className='home-left'>
-          <Sidebar/>
+      <div className="home-wrapper">
+        <div className="home-left">
+          <Sidebar />
         </div>
-        <div className='home-middle'>
-          <p className='home-middle-text'>HOME FEED</p>
+        <div className="home-middle">
+          <p className="home-middle-text">HOME FEED</p>
           <Postbox />
           <Timelinebox />
           <Timelinebox />
           <Ownpostbox />
         </div>
-        <div className='home-right'>
-          <div className='home-right-contents'>
+        <div className="home-right">
+          <div className="home-right-contents">
             <Creatorbox />
             <Friendsuggestion />
             <div className='home-right-ad'>
@@ -52,7 +56,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
