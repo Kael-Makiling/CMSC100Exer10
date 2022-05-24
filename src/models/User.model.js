@@ -29,12 +29,22 @@ const UserSchema = new mongoose.Schema({
         select : false
     },
     friends : {
-        type: Array,
-        default: []
+        type : Array,
+        items: {dropDups: true},
+        default: [],
+        uniqueItems: true,
     },
     friendRequest : {
         type : Array,
-        default: []
+        items: {dropDups: true},
+        default: [],
+        uniqueItems: true,
+    },
+    sentRequest:{
+        type : Array,
+        items: {dropDups: true},
+        default: [],
+        uniqueItems: true,
     },
     name : {
         type : String, 

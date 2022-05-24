@@ -7,9 +7,7 @@ import { useUserAppContext } from '../../context/UserContext';
 
 const Postbox = () => {
   const {register, handleSubmit, reset} = useForm({ resolver: yupResolver(PostSchema)});
-  const {_id} =useUserAppContext();
-
-  //Errors from server
+  const {_id, firstName} =useUserAppContext();
   const [ loading, setloading] = useState(false);
   
   const submitForm = async(data) => {
@@ -33,7 +31,7 @@ const Postbox = () => {
             <form onSubmit={handleSubmit(submitForm)}>
                 <p className='postbox-header'>Write a new Post</p>
                 <div className='postbox-post'>
-                    <div className='postbox-circle'>M</div>
+                    <div className='postbox-circle'>{firstName.split('')[0]}</div>
                     <input className='postbox-input' {...register('content')}/>  
                 </div>
                 <hr className='postbox-line'></hr>

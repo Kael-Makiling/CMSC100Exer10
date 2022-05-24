@@ -1,31 +1,79 @@
-import React from 'react'
+import {useState} from 'react'
 import "./ownpostbox.css";
 import Miniprofile from '../miniprofile/Miniprofile';
-import {FaTrashAlt, faEdit} from "react-icons/fa";
-const Ownpostbox = () => {
-  return (
-    <div className='timelinebox-container'>
-        <div className='timelinebox-wrapper'>
-            <div className='owntimelinebox-firstpart'>
-                <div className='timelinebox-firstpart-left'>
-                    <div className='timelinebox-miniprofile'>
-                        <Miniprofile />
+import {FaTrashAlt, FaEdit, FaBan} from "react-icons/fa";
+import Moment from 'moment';
+const Ownpostbox = ({_id, date, content, createdBy }) => {
+    const [editing,setEditing] = useState(false);
+    const [ loading, setloading] = useState(false);
+    const [ newContent, setNewContent] = useState("");
+    const handleDelete = async()=>{
+        console.log("hatdog");
+        try {
+            const response = await fetch("/api/post/deletePost/"+_id, { 
+              method: 'POST', 
+              headers: { 'Content-Type' : 'application/json'}})
+            const post = await response.json();
+            console.log(post)
+            // window.location.reload(false);
+        } catch (er) {
+        console.log(er);
+        }
+    }
+
+    const handleSubmit = async() => {
+        setloading(true);
+        const response = await fetch("/api/post/editPost/"+_id+"/"+newContent, 
+            {method: 'POST',
+            headers: { 'Content-Type' : 'application/json'}});
+        const post = await response.json();  
+        console.log(post);   
+        setloading(false);
+    }
+    const formatted_date = Moment(date).format("MMM Do YY");  
+    return (
+        <div className='timelinebox-container'>
+            <div className='timelinebox-wrapper'>
+                <div className='owntimelinebox-firstpart'>
+                    <div className='timelinebox-firstpart-left'>
+                        <div className='timelinebox-miniprofile'>
+                            <Miniprofile _id={createdBy}/>
+                        </div>
+                        <div className='timelinebox-time'>
+                            <p className='timelinebox-time-text'> {formatted_date} </p>
+                        </div>
                     </div>
-                    <div className='timelinebox-time'>
-                        <p className='timelinebox-time-text'> 1 hr ago </p>
+                    <div className='timelinebox-firstpart-right'>
+                        {!editing ?
+                            <div className="timelinebox-firstpart-right-icon">  
+                                <FaEdit onClick={()=>{setEditing(true);setNewContent(content)}}/>
+                                <FaTrashAlt onClick={handleDelete}/> 
+                            </div> :
+                            <div>
+                                <FaBan onClick={()=>setEditing(false)}/>
+                            </div>
+                        }
                     </div>
                 </div>
-                <div className='timelinebox-firstpart-right'>
-                    <FaTrashAlt/>
-                    <faEdit/>
+                <div className='timelinebox-secondpart'>
+                    {!editing ? 
+                        <p className='timelinebox-text'>{content} </p> :
+                        <div className='timelinebox-editing'>
+                            <input 
+                                type = "text"
+                                onChange={(e) => setNewContent(e.target.value)} 
+                                value={newContent} 
+                                className='timelinebox-text-input'
+                            />
+                            <div className='timelinebox-text-button'>
+                                <button onClick={()=>{setEditing(false);handleSubmit()}}> Post </button>
+                            </div>
+                        </div>
+                    }
                 </div>
-            </div>
-            <div className='timelinebox-secondpart'>
-                <p className='timelinebox-text'>VP Leni visited Surigao city a few days after Typhoon Odette.She brought assistance and helped us in the rehabilitation phase too. From a grateful city, welcome back! You won in Surigao in 2016. We're working hard for a repeat!💗</p>
             </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Ownpostbox

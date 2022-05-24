@@ -1,20 +1,22 @@
 import React from 'react'
 import "./timelinebox.css";
 import Miniprofile from '../miniprofile/Miniprofile';
-const Timelinebox = () => {
+import Moment from 'moment';
+const Timelinebox = ({_id, date, content }) => {
+  const formatted_date = Moment(date).format("MMM Do YY");
   return (
     <div className='timelinebox-container'>
         <div className='timelinebox-wrapper'>
             <div className='timelinebox-firstpart'>
                 <div className='timelinebox-miniprofile'>
-                    <Miniprofile />
+                    <Miniprofile _id={_id}/>
                 </div>
                 <div className='timelinebox-time'>
-                    <p className='timelinebox-time-text'> 1 hr ago </p>
+                    <p className='timelinebox-time-text'> {formatted_date} </p>
                 </div>
             </div>
             <div className='timelinebox-secondpart'>
-                <p className='timelinebox-text'>VP Leni visited Surigao city a few days after Typhoon Odette.She brought assistance and helped us in the rehabilitation phase too. From a grateful city, welcome back! You won in Surigao in 2016. We're working hard for a repeat!💗</p>
+                <p className='timelinebox-text'>{content}</p>
             </div>
         </div>
     </div>

@@ -1,26 +1,37 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./home.css";
-import { Ownpostbox, Postbox, Timelinebox } from "../../components";
+import { Postbox, Timelinebox } from "../../components";
 import {
   Creatorbox,
   Friendsuggestion,
   Navbar,
   Sidebar,
 } from "../../containers";
+import { useUserAppContext } from '../../context/UserContext';
 
 const Home = () => {
-  useEffect(async () => {
-    try {
-      const response = await fetch("/api/get", {
-        credentials: "include",
-      });
-      console.log("response", response);
-    } catch (er) {
-      console.log(er);
-    }
-    // const get = await response.json();
-    // console.log(new Date());
-  });
+  const [posts, setPosts] = useState([]);
+  const { _id, friends} = useUserAppContext();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const idArray = new Array (_id,...friends)
+        console.log("idArray", idArray)
+        const constraint = JSON.stringify(idArray)
+        const response = await fetch("/api/post/getPost/"+constraint, { 
+          method: 'GET', 
+          headers: { 'Content-Type' : 'application/json'}})
+        const post = await response.json();
+        const data = post.data;
+        setPosts(new Array(...data))
+        // console.log(post)
+        // console.log(data);
+      } catch (er) {
+        console.log(er);
+      }
+    })()
+  },[])
 
   return (
     <div className="home-container">
@@ -32,23 +43,25 @@ const Home = () => {
         <div className="home-middle">
           <p className="home-middle-text">HOME FEED</p>
           <Postbox />
-          <Timelinebox />
-          <Timelinebox />
-          <Ownpostbox />
+          <div className="home-middle-reversed">
+            {posts.map((item, index)=> (
+              <Timelinebox _id={item.createdBy} date={item.createdAt} content={item.content} key={item.createdBy + index}/>
+            ))}
+          </div>
         </div>
         <div className="home-right">
           <div className="home-right-contents">
             <Creatorbox />
             <Friendsuggestion />
             <div className='home-right-ad'>
-              <div class="home-right-suggested">
-                <div class="suggested-container"> 
-                  <p class="suggested-header-text">Music</p>
-                  <p class="suggested-text-small">	• Suggested for you</p>
+              <div className="home-right-suggested">
+                <div className="suggested-container"> 
+                  <p className="suggested-header-text">Music</p>
+                  <p className="suggested-text-small">	• Suggested for you</p>
                 </div>
-                <div class="suggested-photo"></div>
-                <p class="suggested-header-text">Blackpink</p>
-                <p class="suggested-text-small">As if it's your Last</p>
+                <div className="suggested-photo"></div>
+                <p className="suggested-header-text">Blackpink</p>
+                <p className="suggested-text-small">As if it's your Last</p>
                 <button>Listen</button>
               </div>
             </div>

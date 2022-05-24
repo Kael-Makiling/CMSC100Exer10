@@ -4,7 +4,7 @@ import Miniprofilefr from '../miniprofilefr/Miniprofilefr';
 import { FaUserPlus } from "react-icons/fa";
 import { useUserAppContext } from '../../context/UserContext';
 const Friendrequest = () => {
-  const { firstName, lastName, email } = useUserAppContext();
+  const { _id, friendRequest } = useUserAppContext();
   
   return (
     <div className='sidebar-friendrequest'>
@@ -13,9 +13,12 @@ const Friendrequest = () => {
           <p className='sidebar-friends-text'>Friend Request</p>
       </div>
       <div className='sidebar-friendrequests'>
-        <Miniprofilefr />
-        <Miniprofilefr />
-        <Miniprofilefr />
+        {friendRequest.map((item, index)=> (
+          <Miniprofilefr
+            _id={_id}
+            friend_id={item} 
+            key={item + index}/>
+        ))}
       </div>
       <button className='sidebar-viewmore'>
           VIEW MORE

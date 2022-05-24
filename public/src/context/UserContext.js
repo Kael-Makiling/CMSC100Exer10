@@ -13,6 +13,7 @@ const UserInitialState = {
     email: user?.email || '',
     friends: user?.friends || [],
     friendRequest: user?.friendRequest || [],
+    sentRequest: user?.sentRequest || [],
     name: user?.name || '',
     isLoggedIn: user?.isLoggedIn || false,
     _id: user?._id || ''
@@ -30,7 +31,7 @@ const UserProvider = ({children}) => {
     const logOut = () => {
         dispatch({ type : "LOG_OUT"})
         removeUserToStorage();
-        navigate("./sign-in");
+        navigate("./");
     }
     const addUserToStorge = (user) => {
         localStorage.setItem('user', JSON.stringify(user))
@@ -42,18 +43,17 @@ const UserProvider = ({children}) => {
     
     const signIn = (user) => {
         // console.log(user);
-        const { email, firstName, friendRequest, friends, lastName, name, _id } = user;
+        const { email, firstName, friendRequest, sentRequest, friends, lastName, name, _id } = user;
         dispatch({type: "SIGN_IN", payload: { 
             email, 
             firstName, 
-            friendRequest, 
+            friendRequest,
+            sentRequest, 
             friends, 
             lastName, 
             _id,
             name,
         }})
-
-
         addUserToStorge(user);
         navigate("/home");
     };

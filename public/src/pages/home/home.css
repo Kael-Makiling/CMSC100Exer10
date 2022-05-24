@@ -101,4 +101,8 @@
   column-gap: 10px;
 }
 
+.home-middle-reversed{
+  display: flex;
+  flex-direction: column-reverse;
+}
 

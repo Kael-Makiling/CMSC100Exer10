@@ -24,34 +24,61 @@ export const createPost = async (req, res, next) => {
 };
 
 export const deletePost = async (req, res, next) => {
-  const data = await PostModel.deleteOne(req.body.id);
-  res.send(data);
+  try {
+    const {_id} = req.params;
+    // console.log("id", _id);
+    const post = await PostModel.deleteOne({ _id });
+    res.status(200).json({message:"success", data:post});
+    // console.log("post", post)
+  } catch (er) {
+    console.log(er);
+  }
 };
 
 export const editPost = async (req, res, next) => {
-  var filter = { ObjectId: req.body.id };
-  var update = { $set: { content: req.body.content } };
+  const {_id,content} = req.params;
+  // console.log(_id);
+  // console.log(content);
+  const filter = { _id: _id};
+  const update = { $set: { content: content } };
 
-  PostModel.findOneAndUpdate(filter, update).exec(function (err, user) {
+  PostModel.findOneAndUpdate(filter, update).exec(function (err, post) {
     //error is found
     if (err) {
       console.log(err);
       res.status(500).send(err);
-      //User not found
-    } else if (!user) {
-      console.log("User not found!");
-      res.status(200).send(user);
-      //Successfully Updated User
-    } else {
+      //Post not found
+    }  else {
       console.log("Content is Updated!");
-      res.status(200).send(user);
+      console.log(post);
+      res.status(200).send(post);
     }
   });
 };
 export const getPost = async (req, res, next) => {
-  console.log("helo");
-  PostModel.find().then((err, result) => {
-    console.log(result);
-    res.render("index", { data: result });
-  });
+  try {
+    const {_id} = req.params;
+    const constraint = JSON.parse(_id)
+    // console.log("constraint", constraint)
+    const post = await PostModel.find({'createdBy': {$in:constraint}})
+    res.status(200).json({message:"success", data:post})
+    // console.log(post)
+  } catch (er) {
+    console.log(er);
+  }
 };
+
+export const getOwnPost = async (req, res, next) => {
+  try {
+    const {_id} = req.params;
+    // console.log(_id);
+    const post = await PostModel.find({"createdBy":_id});
+    res.status(200).json({message:"success", data:post});
+    // console.log(post)
+  } catch (er) {
+    console.log(er);
+  }
+};
+
+
+

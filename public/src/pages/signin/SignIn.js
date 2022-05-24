@@ -79,7 +79,7 @@ const SignIn = () => {
               navigate("/sign-up");
             }}
           >
-            SIGN IN
+            SIGN UP
           </Buttons>
         </div>
       </div>
