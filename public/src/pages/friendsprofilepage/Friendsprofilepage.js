@@ -1,26 +1,27 @@
 import {useEffect, useState} from 'react';
-import "./profilepage.css";
-import { Postbox, Ownpostbox } from '../../components';
+import "./friendsprofilepage.css";
+import { Timelinebox } from '../../components';
 import {Creatorbox, Friendsuggestion, Navbar, Sidebar} from '../../containers';
-import { useUserAppContext } from '../../context/UserContext';
+import {useLocation} from 'react-router-dom';
 import { DotLoader } from 'react-spinners';
 
-const Profilepage = () => {
-  const { _id, name } = useUserAppContext();
+const Friendsprofilepage = () => {
   const [posts, setPosts] = useState([]);
+  const { state } = useLocation();
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true)
-        const response = await fetch("/api/post/getOwnPost/"+_id, { 
+        setLoading(true);
+        const response = await fetch("/api/post/getOwnPost/"+state.id, { 
           method: 'GET', 
           headers: { 'Content-Type' : 'application/json'}})
         const post = await response.json();
         const data = post.data;
         setPosts(new Array(...data))
-        // console.log(post)
-        // console.log(data);
+        console.log(post)
+        console.log(data);
         setTimeout(()=>{
           setLoading(false);
         },1000)
@@ -32,6 +33,7 @@ const Profilepage = () => {
 
   return (
     <div className='home-container'>
+      {console.log("posts", posts)}
       <Navbar />
       {
         loading ? 
@@ -47,11 +49,10 @@ const Profilepage = () => {
           <Sidebar/>
         </div>
         <div className='home-middle'>
-          <p className='home-middle-text'>{name}</p>
-          <Postbox />
+          <p className='home-middle-text'>{state.name}</p>
           <div className='home-middle-reversed'>
           {posts.map((item, index)=> (
-            <Ownpostbox _id={item._id} date={item.createdAt} content={item.content} createdBy={item.createdBy} key={item.createdBy + index}/>
+            <Timelinebox _id={item.createdBy} date={item.createdAt} content={item.content} key={item.createdBy + index}/>
           ))}
           </div>
         </div>
@@ -67,4 +68,4 @@ const Profilepage = () => {
   )
 }
 
-export default Profilepage
+export default Friendsprofilepage

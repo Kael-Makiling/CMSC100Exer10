@@ -44,6 +44,16 @@ export const getOtherUsers = async (req, res, next) => {
     }
 }
 
+export const getAllUsers = async (req, res, next) => {
+  try {
+    const user = await UserModel.find({})
+    res.status(200).json({message:"success", data:user})
+    // console.log(user)
+  } catch (er) {
+    console.log(er);
+  }
+}
+
 
 export const acceptRequest = async (req, res, next) => {
     try {

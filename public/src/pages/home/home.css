@@ -1,6 +1,13 @@
 .home-container {
   overflow: hidden;
 }
+.centeredSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
 
 .home-wrapper {
   display: flex;
@@ -106,3 +113,8 @@
   flex-direction: column-reverse;
 }
 
+.home-spinner{
+  width: 100px;
+  height: 100px;
+  color: var(--color-dark);
+}

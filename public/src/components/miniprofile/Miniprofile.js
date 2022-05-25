@@ -13,6 +13,8 @@ const Miniprofile = ({_id}) => {
           headers: { 'Content-Type' : 'application/json'}})
         const post = await response.json();
         const data = post.data;
+
+        //Setting of Variable Contents
         setFullname(data.firstName + " " +data.lastName)
         setEmail(data.email)
         setFirstCharacter(data.firstName.split('')[0])

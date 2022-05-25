@@ -5,31 +5,24 @@ import {FaTrashAlt, FaEdit, FaBan} from "react-icons/fa";
 import Moment from 'moment';
 const Ownpostbox = ({_id, date, content, createdBy }) => {
     const [editing,setEditing] = useState(false);
-    const [ loading, setloading] = useState(false);
     const [ newContent, setNewContent] = useState("");
     const handleDelete = async()=>{
         console.log("hatdog");
         try {
-            const response = await fetch("/api/post/deletePost/"+_id, { 
+            await fetch("/api/post/deletePost/"+_id, { 
               method: 'POST', 
               headers: { 'Content-Type' : 'application/json'}})
-            const post = await response.json();
-            console.log(post)
-            // window.location.reload(false);
         } catch (er) {
         console.log(er);
         }
     }
 
     const handleSubmit = async() => {
-        setloading(true);
-        const response = await fetch("/api/post/editPost/"+_id+"/"+newContent, 
+        await fetch("/api/post/editPost/"+_id+"/"+newContent, 
             {method: 'POST',
-            headers: { 'Content-Type' : 'application/json'}});
-        const post = await response.json();  
-        console.log(post);   
-        setloading(false);
+            headers: { 'Content-Type' : 'application/json'}});  
     }
+
     const formatted_date = Moment(date).format("MMM Do YY");  
     return (
         <div className='timelinebox-container'>
@@ -66,7 +59,9 @@ const Ownpostbox = ({_id, date, content, createdBy }) => {
                                 className='timelinebox-text-input'
                             />
                             <div className='timelinebox-text-button'>
-                                <button onClick={()=>{setEditing(false);handleSubmit()}}> Post </button>
+                                <button onClick={()=>{setEditing(false);handleSubmit()}}> 
+                                Post 
+                                </button>
                             </div>
                         </div>
                     }

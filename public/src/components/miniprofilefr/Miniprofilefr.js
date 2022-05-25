@@ -13,6 +13,8 @@ const Miniprofilefr = ({friend_id, _id}) => {
           headers: { 'Content-Type' : 'application/json'}})
         const post = await response.json();
         const data = post.data;
+
+        //Setting of Variable Contents
         setFullname(data.firstName + " " +data.lastName);
         setEmail(data.email);
         setFirstCharacter(data.firstName.split('')[0]);
@@ -24,22 +26,16 @@ const Miniprofilefr = ({friend_id, _id}) => {
 
   const handleConfirm = async() => {
     console.log("confirm");
-    //const response =
     await fetch("/api/user/acceptRequest/"+friend_id+"/"+_id, { 
       method: 'POST', 
       headers: { 'Content-Type' : 'application/json'}})
-    // const user = await response.json();
-    // console.log(user)
   }
 
   const handleReject = async() => {
     console.log("reject");
-    //const response = 
     await fetch("/api/user/rejectRequest/"+friend_id+"/"+_id, { 
       method: 'POST', 
       headers: { 'Content-Type' : 'application/json'}})
-    // const user = await response.json();
-    // console.log(user)
   }
 
   return (

@@ -50,7 +50,7 @@ export const editPost = async (req, res, next) => {
       //Post not found
     }  else {
       console.log("Content is Updated!");
-      console.log(post);
+      // console.log(post);
       res.status(200).send(post);
     }
   });

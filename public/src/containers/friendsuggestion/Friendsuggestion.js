@@ -13,7 +13,8 @@ const Friendsuggestion = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log("sentRequest", sentRequest)
+        //CANT GET SENT REQUEST DATA
+        console.log("sentRequest", sentRequest);
         const idArray = new Array (...friendRequest,_id,...friends)
         const idConstraint = JSON.stringify(idArray)
         // console.log("constraint", idConstraint);
