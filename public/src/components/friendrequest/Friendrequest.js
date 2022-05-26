@@ -13,16 +13,13 @@ const Friendrequest = () => {
           <p className='sidebar-friends-text'>Friend Request</p>
       </div>
       <div className='sidebar-friendrequests'>
-        {friendRequest.map((item, index)=> (
-          <Miniprofilefr
-            _id={_id}
-            friend_id={item} 
-            key={item + index}/>
-        ))}
+      {friendRequest.map((item, index)=> (
+        <Miniprofilefr
+          _id={_id}
+          friend_id={item} 
+          key={item + index}/>
+      ))}
       </div>
-      <button className='sidebar-viewmore'>
-          VIEW MORE
-      </button>
     </div>
   )
 }

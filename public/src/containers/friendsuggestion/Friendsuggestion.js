@@ -6,8 +6,6 @@ import { useUserAppContext } from '../../context/UserContext';
 
 const Friendsuggestion = () => {
   const [users, setUsers] = useState([]);
-  // const [idArray, setIdArray] = useState([]);
-  // const [final_idArray, setfinal_IdArray] = useState("");
   const { _id, friendRequest, friends, sentRequest } = useUserAppContext();
 
   useEffect(() => {
@@ -24,8 +22,6 @@ const Friendsuggestion = () => {
         const user = await response.json();
         const data = user.data;
         setUsers(new Array(...data))
-        // console.log(user)
-        // console.log(data);
       } catch (er) {
         console.log(er);
       }
@@ -34,8 +30,6 @@ const Friendsuggestion = () => {
 
   return (
     <div className='friendsuggestion-container'>
-        {/* {console.log("idArray",idArray)} */}
-        {/* {console.log("final_idArray",final_idArray)} */}
         <div className='friendsuggestion-wrapper'>
             <div className='friendsuggestion-firstpart'>
                 <FaUserPlus className='friendsuggestion-icon'/>

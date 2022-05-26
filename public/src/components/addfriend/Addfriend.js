@@ -3,9 +3,9 @@ import "./addfriend.css";
 import Miniprofile from '../miniprofile/Miniprofile';
 import { FaUserFriends } from "react-icons/fa";
 import { useUserAppContext } from '../../context/UserContext';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 const Addfriends = () => {
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
   const { friends } = useUserAppContext();
 
   return (
@@ -19,13 +19,13 @@ const Addfriends = () => {
           _id={item} 
           key={item + index}/>
       ))}
-    <button className='sidebar-viewmore'
+    {/* <button className='sidebar-viewmore'
       onClick={() => {
         navigate("/friendsPage");
       }}
     >
         VIEW MORE
-    </button>
+    </button> */}
     </div>
   )
 }

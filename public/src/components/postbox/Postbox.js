@@ -8,11 +8,8 @@ import { useUserAppContext } from '../../context/UserContext';
 const Postbox = () => {
   const {register, handleSubmit, reset} = useForm({ resolver: yupResolver(PostSchema)});
   const {_id, firstName} =useUserAppContext();
-  const [ loading, setloading] = useState(false);
   
   const submitForm = async(data) => {
-    setloading(true);
-
     const newDate = new Date();
 
     const postBody = {createdAt:newDate, content: data.content, createdBy:_id}
@@ -21,8 +18,6 @@ const Postbox = () => {
 
     console.log(post);
     reset();
-
-    setloading(false);
   }
 
   return (
@@ -36,9 +31,7 @@ const Postbox = () => {
                 </div>
                 <hr className='postbox-line'></hr>
                 <div className='postbox-button'> 
-                    <button
-                        disabled={loading} 
-                    >
+                    <button>
                         Post
                     </button>
                 </div>

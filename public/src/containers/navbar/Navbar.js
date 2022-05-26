@@ -4,6 +4,7 @@ import { FaSearch, FaBan } from "react-icons/fa";
 import { useUserAppContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 
+
 const Navbar = () => {
   let navigate = useNavigate();
   const { name, logOut} = useUserAppContext();

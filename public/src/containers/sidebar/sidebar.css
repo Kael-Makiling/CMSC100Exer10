@@ -12,17 +12,26 @@
 
 .sidebar-wrapper {
   width: 225px;
-  min-height: 550px;
+  min-height: 150px;
   display: flex;
   background-color: var(--color-normal);
   border-radius: 10px;
 
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 
   row-gap: 10px;
 }
 
 p {
   color: var(--color-dark);
+}
+
+.sidebar-wrapper-contents{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  row-gap: 20px;
 }

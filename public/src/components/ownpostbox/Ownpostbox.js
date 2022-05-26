@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import "./ownpostbox.css";
 import Miniprofile from '../miniprofile/Miniprofile';
 import {FaTrashAlt, FaEdit, FaBan} from "react-icons/fa";
@@ -6,6 +6,14 @@ import Moment from 'moment';
 const Ownpostbox = ({_id, date, content, createdBy }) => {
     const [editing,setEditing] = useState(false);
     const [ newContent, setNewContent] = useState("");
+    const [ tempContent, setTempContent] = useState("");
+
+    useEffect (()=>{
+        if (tempContent===""){
+            setTempContent(content)
+        }
+    },[tempContent])
+
     const handleDelete = async()=>{
         console.log("hatdog");
         try {
@@ -21,6 +29,8 @@ const Ownpostbox = ({_id, date, content, createdBy }) => {
         await fetch("/api/post/editPost/"+_id+"/"+newContent, 
             {method: 'POST',
             headers: { 'Content-Type' : 'application/json'}});  
+        setTempContent(newContent)
+        console.log(newContent)
     }
 
     const formatted_date = Moment(date).format("MMM Do YY");  
@@ -50,7 +60,7 @@ const Ownpostbox = ({_id, date, content, createdBy }) => {
                 </div>
                 <div className='timelinebox-secondpart'>
                     {!editing ? 
-                        <p className='timelinebox-text'>{content} </p> :
+                        <p className='timelinebox-text'>{tempContent} </p> :
                         <div className='timelinebox-editing'>
                             <input 
                                 type = "text"
