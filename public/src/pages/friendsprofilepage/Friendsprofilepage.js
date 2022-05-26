@@ -8,12 +8,11 @@ import { DotLoader } from 'react-spinners';
 const Friendsprofilepage = () => {
   const [posts, setPosts] = useState([]);
   const { state } = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true);
         const response = await fetch("/api/post/getOwnPost/"+state.id, { 
           method: 'GET', 
           headers: { 'Content-Type' : 'application/json'}})
@@ -29,7 +28,7 @@ const Friendsprofilepage = () => {
         console.log(er);
       }
     })()
-  },[])
+  },[posts])
 
   return (
     <div className='home-container'>

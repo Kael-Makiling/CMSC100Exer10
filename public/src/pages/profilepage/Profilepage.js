@@ -8,19 +8,16 @@ import { DotLoader } from 'react-spinners';
 const Profilepage = () => {
   const { _id, name } = useUserAppContext();
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true)
         const response = await fetch("/api/post/getOwnPost/"+_id, { 
           method: 'GET', 
           headers: { 'Content-Type' : 'application/json'}})
         const post = await response.json();
         const data = post.data;
         setPosts(new Array(...data))
-        // console.log(post)
-        // console.log(data);
         setTimeout(()=>{
           setLoading(false);
         },1000)
@@ -28,7 +25,7 @@ const Profilepage = () => {
         console.log(er);
       }
     })()
-  },[])
+  },[posts])
 
   return (
     <div className='home-container'>
@@ -48,10 +45,17 @@ const Profilepage = () => {
         </div>
         <div className='home-middle'>
           <p className='home-middle-text'>{name}</p>
-          <Postbox />
+          <Postbox 
+            setValue={(value)=>setPosts(new Array(...posts,value))}
+          />
           <div className='home-middle-reversed'>
           {posts.map((item, index)=> (
-            <Ownpostbox _id={item._id} date={item.createdAt} content={item.content} createdBy={item.createdBy} key={item.createdBy + index}/>
+            <Ownpostbox 
+              _id={item._id}
+              date={item.createdAt}
+              content={item.content}
+              createdBy={item.createdBy}
+              key={item.createdBy + index}/>
           ))}
           </div>
         </div>

@@ -2,15 +2,15 @@ import React from 'react'
 import "./miniprofilesugg.css"
 import {FaPlusCircle} from "react-icons/fa"; 
 import { useUserAppContext } from '../../context/UserContext';
-const Miniprofilesugg = ({friend_id, fullname, email}) => {
+const Miniprofilesugg = ({friend_id, fullname, email, setValue}) => {
   const {_id} =useUserAppContext();
 
   const handleAddFriend = async()=> {
-    const response = await fetch("/api/user/addFriend/"+friend_id+"/"+_id, { 
+    await fetch("/api/user/addFriend/"+friend_id+"/"+_id, { 
       method: 'POST', 
       headers: { 'Content-Type' : 'application/json'}})
-    const user = await response.json();
-    console.log(user);
+    setValue(friend_id);
+    // console.log(user);
   }
 
   return (

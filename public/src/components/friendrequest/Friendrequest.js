@@ -1,10 +1,9 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import "./friendrequest.css";
 import Miniprofilefr from '../miniprofilefr/Miniprofilefr';
 import { FaUserPlus } from "react-icons/fa";
-import { useUserAppContext } from '../../context/UserContext';
-const Friendrequest = () => {
-  const { _id, friendRequest } = useUserAppContext();
+
+const Friendrequest = ({_id, friendRequest, setValue, setState}) => {
   
   return (
     <div className='sidebar-friendrequest'>
@@ -17,7 +16,10 @@ const Friendrequest = () => {
         <Miniprofilefr
           _id={_id}
           friend_id={item} 
-          key={item + index}/>
+          key={item + index}
+          setValue={(value)=>setValue(value)}
+          setState={(value)=>setState(value)}
+        />
       ))}
       </div>
     </div>

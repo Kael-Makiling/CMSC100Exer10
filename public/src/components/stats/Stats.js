@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react'
 import "./stats.css";
-import { useUserAppContext } from '../../context/UserContext';
-const Stats = () => {
-  const { _id, friendRequest, friends } = useUserAppContext();
+
+const Stats = ({_id, friendRequest, friends}) => {
   const [numPost, setNumPost] = useState("");
 
   useEffect(() => {

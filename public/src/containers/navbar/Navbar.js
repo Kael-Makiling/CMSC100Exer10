@@ -51,8 +51,8 @@ const Navbar = () => {
 
   return (
     <div className="navbar-container">
-      {console.log(data)}
-      {console.log(filteredData)}
+      {/* {console.log(data)}
+      {console.log(filteredData)} */}
       <div className="navbar-wrapper">
         <div className="navbar-left">
             <div className='navbar-item-container'>

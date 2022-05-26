@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Postbox, Timelinebox } from "../../components";
-import { DotLoader } from 'react-spinners';
+import DotLoader from 'react-spinners/DotLoader';
 import {
   Creatorbox,
   Friendsuggestion,
@@ -13,14 +13,14 @@ import { useUserAppContext } from '../../context/UserContext';
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const { _id, friends} = useUserAppContext();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  // const [numPost, setNumPost] = useState(0)
 
   useEffect(() => {
     (async () => {
-      setLoading(true);
       try {
         const idArray = new Array (_id,...friends)
-        console.log("idArray", idArray)
+        // console.log("idArray", idArray)
         const constraint = JSON.stringify(idArray)
         const response = await fetch("/api/post/getPost/"+constraint, { 
           method: 'GET', 
@@ -28,18 +28,21 @@ const Home = () => {
         const post = await response.json();
         const data = post.data;
         setPosts(new Array(...data))
-        setTimeout(()=>{
-          setLoading(false);
-        },1000)
-        // console.log(post)
-        // console.log(data);
+        // setTimeout(()=>{
+        //   setLoading(false);
+        // },1000)
       } catch (er) {
         console.log(er);
       }
+      setLoading(false)
     })()
   },[])
 
   return (
+    <>
+    {console.log("hello")}
+    {console.log(posts)}
+    {console.log(posts.length)}
     <div className="home-container">
       {
         loading ? 
@@ -54,14 +57,23 @@ const Home = () => {
           <Navbar />
           <div className="home-wrapper">
             <div className="home-left">
-              <Sidebar />
+              <Sidebar 
+              // numPost={numPost}
+              />
             </div>
             <div className="home-middle">
               <p className="home-middle-text">HOME FEED</p>
-              <Postbox />
+              <Postbox
+                setValue={(value)=>setPosts(new Array(...posts,value))}
+              />
               <div className="home-middle-reversed">
                 {posts.map((item, index)=> (
-                  <Timelinebox _id={item.createdBy} date={item.createdAt} content={item.content} key={item.createdBy + index}/>
+                  <Timelinebox 
+                    _id={item.createdBy} 
+                    date={item.createdAt} 
+                    content={item.content} 
+                    key={item.createdBy + index}
+                  />
                 ))}
               </div>
             </div>
@@ -87,6 +99,7 @@ const Home = () => {
         </div>
       }
     </div>
+    </>
   );
 };
 

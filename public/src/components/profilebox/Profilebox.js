@@ -1,9 +1,6 @@
 import React from 'react';
 import "./profilebox.css";
-import { useUserAppContext } from '../../context/UserContext';
-const Profilebox = () => {
-  const { firstName, lastName, email } = useUserAppContext();
-
+const Profilebox = ({firstName, lastName, email}) => {
   return (
     <div className='sidebar-profile'>
         <div className="sidebar-profile-square"></div>

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import "./miniprofilefr.css"
-const Miniprofilefr = ({friend_id, _id}) => {
+const Miniprofilefr = ({friend_id, _id, setState, setValue}) => {
   const [fullname, setFullname] = useState()
   const [firstCharacter, setFirstCharacter] = useState();
   const [email, setEmail] = useState()
@@ -29,6 +29,8 @@ const Miniprofilefr = ({friend_id, _id}) => {
     await fetch("/api/user/acceptRequest/"+friend_id+"/"+_id, { 
       method: 'POST', 
       headers: { 'Content-Type' : 'application/json'}})
+    setValue(friend_id)
+    setState("1")
   }
 
   const handleReject = async() => {
@@ -36,6 +38,8 @@ const Miniprofilefr = ({friend_id, _id}) => {
     await fetch("/api/user/rejectRequest/"+friend_id+"/"+_id, { 
       method: 'POST', 
       headers: { 'Content-Type' : 'application/json'}})
+    setValue(friend_id)
+    setState("2")
   }
 
   return (
