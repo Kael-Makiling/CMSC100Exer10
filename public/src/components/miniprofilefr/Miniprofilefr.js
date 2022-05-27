@@ -1,51 +1,61 @@
-import {useEffect, useState} from 'react'
+import React from 'react'
 import "./miniprofilefr.css"
-const Miniprofilefr = ({friend_id, _id, setState, setValue}) => {
-  const [fullname, setFullname] = useState()
-  const [firstCharacter, setFirstCharacter] = useState();
-  const [email, setEmail] = useState()
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch("/api/user/getUser/"+friend_id, { 
-          method: 'GET', 
-          headers: { 'Content-Type' : 'application/json'}})
-        const post = await response.json();
-        const data = post.data;
+//PURPOSE:This component holds the information of a user friend request.
+//        It also handles the accepting and rejecting of a request.
+//UTILIZED IN: Sidebar
+//BUTTONS: For Accept and Reject
 
-        //Setting of Variable Contents
-        setFullname(data.firstName + " " +data.lastName);
-        setEmail(data.email);
-        setFirstCharacter(data.firstName.split('')[0]);
-      } catch (er) {
-        console.log(er);
-      }
-    })()
-  },[])
+const Miniprofilefr = ({_id, friend_id, fullname, oneChar, email, 
+  friendRequestArray, setfriendRequestArray, friendsArray, setFriendsArray
+}) => {
 
+  //Purpose: Handles the confirmation
+  //        It posts the updated content to the database
+  //        Added to Friends, while removing from friend requests
   const handleConfirm = async() => {
-    console.log("confirm");
     await fetch("/api/user/acceptRequest/"+friend_id+"/"+_id, { 
       method: 'POST', 
       headers: { 'Content-Type' : 'application/json'}})
-    setValue(friend_id)
-    setState("1")
+
+    var tempArray = [...friendRequestArray]; // make a separate copy of the array
+    const index = tempArray.map(object => object.email).indexOf(email);
+
+    if (index !== -1) {
+      tempArray.splice(index, 1);
+      setfriendRequestArray(tempArray);
+    }    
+
+    //Add Friend to Friends Array
+    const newFriend = {           
+      fullName: fullname,
+      email: email,
+      oneChar: oneChar,
+      friend_id: friend_id
+    }
+    setFriendsArray(new Array (...friendsArray,newFriend))
   }
 
+  //Purpose: Handles the rejection
+  //        It posts the updated content to the database
+  //        Removing from friend requests
   const handleReject = async() => {
-    console.log("reject");
     await fetch("/api/user/rejectRequest/"+friend_id+"/"+_id, { 
       method: 'POST', 
       headers: { 'Content-Type' : 'application/json'}})
-    setValue(friend_id)
-    setState("2")
+
+    let tempArray = [...friendRequestArray]; // make a separate copy of the array
+    const index = tempArray.map(object => object.email).indexOf(email);
+    if (index !== -1) {
+      tempArray.splice(index, 1);
+      setfriendRequestArray(tempArray);
+    }
   }
 
   return (
     <div className='sidebar-friendsfr-box'>
         <div className='sidebar-friends-info'>
-          <div className='sidebar-friends-circle'>{firstCharacter}</div>
+          <div className='sidebar-friends-circle'>{oneChar}</div>
           <div className='sidebar-friends-name'>
               <p className='sidebar-friends-fullname'>{fullname}</p>
               <p className='sidebar-friends-username'>{email}</p>

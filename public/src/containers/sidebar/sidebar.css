@@ -24,6 +24,14 @@
   row-gap: 10px;
 }
 
+.sidebarSpinner{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 225px;
+  height: 150px;
+}
+
 p {
   color: var(--color-dark);
 }

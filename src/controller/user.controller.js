@@ -1,7 +1,5 @@
 
 import UserModel from "../models/User.model.js";
-// import { useUserAppContext } from '../../context/UserContext';
-
 
 //Creates User
 export const createUser = async (req,res,next) => {
@@ -15,6 +13,7 @@ export const createUser = async (req,res,next) => {
             email: data.email,
             friends: data.friends,
             friendRequest: data.friendRequest,
+            pendingRequest: data.friendRequest,
             name: data.name,
             _id: data._id,
         });
@@ -30,11 +29,11 @@ export const createUser = async (req,res,next) => {
     }
 }
 
+//Gets Users other than the given constraint
 export const getOtherUsers = async (req, res, next) => {
     try {
       const {_id} = req.params;
       const constraint = JSON.parse(_id);
-    //   console.log("constraint",constraint);
       if (constraint != []){
         const user = await UserModel.find({ _id: { $nin: constraint } })
         res.status(200).json({message:"success", data:user})
@@ -44,25 +43,64 @@ export const getOtherUsers = async (req, res, next) => {
     }
 }
 
+//Gets All Users
 export const getAllUsers = async (req, res, next) => {
   try {
     const user = await UserModel.find({})
     res.status(200).json({message:"success", data:user})
-    // console.log(user)
   } catch (er) {
     console.log(er);
   }
 }
 
-
+//Accepting of Friend Requests
 export const acceptRequest = async (req, res, next) => {
     try {
         const {friend_id,_id} = req.params;
-        // console.log(_id);
-        // console.log(friend_id);
+
         if (_id != 'undefined' && friend_id != 'undefined'){
-            const update = { $pull: { friendRequest: friend_id }, $push: {friends: friend_id} };
-        UserModel.findByIdAndUpdate(_id, update).exec(function (err, user) {
+          
+          const update = { $pull: { friendRequest: friend_id }, $push: {friends: friend_id} };
+           //Removes from friend request, and Added to friends
+          UserModel.findByIdAndUpdate(_id, update).exec(function (err, user) {
+              //error is found
+              if (err) {
+                console.log(err);
+                res.status(500).send(err);
+              //Content Updated
+              }  else {
+                console.log("Friend Added");
+              //   console.log(user);
+                res.status(200).send(user);
+              }
+          });
+
+          //Removes from pending request, and Added to friends
+          const update2 = { $pull: { pendingRequest: _id }, $push: {friends: _id} };
+          UserModel.findByIdAndUpdate(friend_id, update2).exec(function (err, user) {
+              //error is found
+              if (err) {
+                console.log(err);
+                res.status(500).send(err);
+              //Content Updated
+              }  else {
+                console.log("Removed from pending request");
+              }
+          });
+        }
+    } catch (er) {
+        console.log(er);
+    }
+}
+
+//Rejecting of Friend Requests
+export const rejectRequest = async (req, res, next) => {
+    try {
+        const {friend_id,_id} = req.params;
+        if (_id != 'undefined'){
+          //Removes from friend request
+          const update = { $pull: { friendRequest: friend_id }};
+          UserModel.findByIdAndUpdate(_id, update).exec(function (err, user) {
             //error is found
             if (err) {
               console.log(err);
@@ -74,7 +112,9 @@ export const acceptRequest = async (req, res, next) => {
               res.status(200).send(user);
             }
           });
-          const update2 = { $pull: { sentRequest: _id }, $push: {friends: _id} };
+
+          // Removes from pending request
+          const update2 = { $pull: { pendingRequest: _id }};
           UserModel.findByIdAndUpdate(friend_id, update2).exec(function (err, user) {
             //error is found
             if (err) {
@@ -82,9 +122,7 @@ export const acceptRequest = async (req, res, next) => {
               res.status(500).send(err);
             //Content Updated
             }  else {
-              console.log("Content is Updated!");
-            //   console.log(user);
-            //   res.status(200).send(user);
+              console.log("Removed from pending request");
             }
           });
         }
@@ -93,38 +131,13 @@ export const acceptRequest = async (req, res, next) => {
     }
 }
 
-export const rejectRequest = async (req, res, next) => {
-    try {
-        const {friend_id,_id} = req.params;
-        // console.log(_id);
-        // console.log(friend_id);
-        const update = { $pull: { friendRequest: friend_id }};
-        if (_id != 'undefined'){
-            UserModel.findByIdAndUpdate(_id, update).exec(function (err, user) {
-                //error is found
-                if (err) {
-                  console.log(err);
-                  res.status(500).send(err);
-                //Content Updated
-                }  else {
-                  console.log("Content is Updated!");
-                //   console.log(user);
-                  res.status(200).send(user);
-                }
-              });
-        }
-    } catch (er) {
-        console.log(er);
-    }
-}
-
+//Gets User
 export const getUser = async (req, res, next) => {
     try {
         const {_id} = req.params;
         if (_id != 'undefined'){
             const user = await UserModel.findById({_id})
             res.status(200).json({message:"success", data:user})
-            // console.log(user)
         }
     } catch (er) {
         console.log(er);
@@ -135,33 +148,31 @@ export const getUser = async (req, res, next) => {
 export const addFriend = async (req, res, next) => {
     try {
         const {friend_id,_id} = req.params;
-        // console.log(_id);
-        // console.log(friend_id);
         if (_id != 'undefined'){
             const update = { $push: { friendRequest: _id}};
             UserModel.findByIdAndUpdate(friend_id, update).exec(function (err, user) {
-                //error is found
-                if (err) {
-                  console.log(err);
-                  res.status(500).send(err);
-                  //User not found
-                }  else {
-                  console.log("Content is Updated!");
-                //   console.log(user);
-                  res.status(200).send(user);
-                }
-              });
-              const update2 = { $push: { sentRequest: friend_id}};
-              UserModel.findByIdAndUpdate(_id, update2).exec(function (err, user) {
-                //error is found
-                if (err) {
-                  console.log(err);
-                  res.status(500).send(err);
-                  //User not found
-                }  else {
-                  console.log("Content is Updated!");
-                }
-              });
+              //error is found
+              if (err) {
+                console.log(err);
+                res.status(500).send(err);
+                //User not found
+              }  else {
+                console.log("Content is Updated!");
+              //   console.log(user);
+                res.status(200).send(user);
+              }
+            });
+            const update2 = { $push: { pendingRequest: friend_id}};
+            UserModel.findByIdAndUpdate(_id, update2).exec(function (err, user) {
+              //error is found
+              if (err) {
+                console.log(err);
+                res.status(500).send(err);
+                //User not found
+              }  else {
+                console.log("Content is Updated!");
+              }
+            });
         }
     } catch (er) {
         console.log(er);
@@ -189,6 +200,7 @@ export const logInUser = async (req, res, next) => {
             email: user.email,
             friends: user.friends,
             friendRequest: user.friendRequest,
+            pendingRequest : user.pendingRequest,
             _id: user._id,
             name: user.name,
         })

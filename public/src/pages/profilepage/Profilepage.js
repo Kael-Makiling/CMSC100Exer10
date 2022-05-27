@@ -5,10 +5,24 @@ import {Creatorbox, Friendsuggestion, Navbar, Sidebar} from '../../containers';
 import { useUserAppContext } from '../../context/UserContext';
 import { DotLoader } from 'react-spinners';
 
+//PURPOSE: This page shows the users own page
+//        Here they can edit and delete their own post
 const Profilepage = () => {
-  const { _id, name } = useUserAppContext();
-  const [posts, setPosts] = useState([]);
+  //All
+  const {firstName, lastName, email, _id, friends, name} = useUserAppContext();
   const [loading, setLoading] = useState(true);
+  const [oneChar, setOneChar] = useState('')
+  const [tempFriends, setTempFriends] = useState([])
+  const [tempFriendRequest, setTempFriendRequest] = useState([])
+  const [tempPendingRequest, setTempPendingRequest] = useState([])
+  const [method,setMethod] = useState(0); //If 1 Posting will be from Profilepage
+
+  //Left SideBar
+  const [numPost, setNumPost] = useState(0);
+
+  //For Middle
+  const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     (async () => {
       try {
@@ -18,35 +32,64 @@ const Profilepage = () => {
         const post = await response.json();
         const data = post.data;
         setPosts(new Array(...data))
-        setTimeout(()=>{
-          setLoading(false);
-        },1000)
+        setOneChar(name.split('')[0])
+
+        //Get Self Contents
+        const response2 = await fetch("/api/user/getUser/"+_id, { 
+          method: 'GET', 
+          headers: { 'Content-Type' : 'application/json'}})
+        const self = await response2.json();
+        const dataSelf = self.data;
+        setTempFriends(dataSelf.friends)
+        setTempFriendRequest(dataSelf.friendRequest)
+        setTempPendingRequest(dataSelf.pendingRequest)
+
+        //For Numpost
+        let counter = 0;
+        for(let i = 0; i < data.length; i++){
+          if(data[i].createdBy === _id){
+            counter++;
+          }
+        }
+        setNumPost(counter)
+
       } catch (er) {
         console.log(er);
-      }
+      }    
+      setLoading(false)
     })()
-  },[posts])
+  },[])
 
   return (
     <div className='home-container'>
       <Navbar />
-      {
-        loading ? 
+      {loading ? 
         <div className="centeredSpinner">
             <DotLoader
             size={80}
             color={'#4f4a47'}
-            loading={loading}/>
-        </div>
-        :
-      <div className='home-wrapper'>
-        <div className='home-left'>
-          <Sidebar/>
-        </div>
+            loading={loading}
+            />
+        </div> :
+        <div className='home-wrapper'>
+          <div className='home-left'>
+            <Sidebar 
+              firstName={firstName}
+              lastName={lastName}
+              email={email}
+              _id={_id}
+              friends={tempFriends}
+              friendRequest={tempFriendRequest}
+              numPost={numPost}
+            />
+          </div>
         <div className='home-middle'>
           <p className='home-middle-text'>{name}</p>
-          <Postbox 
-            setValue={(value)=>setPosts(new Array(...posts,value))}
+          <Postbox
+            setPosts={(value)=>setPosts(value)}
+            setNumPost={(value)=>setNumPost(value)}
+            numPost={numPost}
+            method={method}
           />
           <div className='home-middle-reversed'>
           {posts.map((item, index)=> (
@@ -54,7 +97,13 @@ const Profilepage = () => {
               _id={item._id}
               date={item.createdAt}
               content={item.content}
-              createdBy={item.createdBy}
+              fullName={name}
+              email={email}
+              oneChar={oneChar}
+              setNumPost={(value)=>setNumPost(value)}
+              numPost={numPost}
+              setPosts={(value)=>setPosts(value)}
+              posts={posts}
               key={item.createdBy + index}/>
           ))}
           </div>
@@ -62,7 +111,13 @@ const Profilepage = () => {
         <div className='home-right'>
           <div className='home-right-contents'>
             <Creatorbox />
-            <Friendsuggestion />
+            <Friendsuggestion 
+              friendRequest={tempFriendRequest}
+              _id={_id}
+              friends={friends}
+              tempPendingRequest={tempPendingRequest}
+              setTempPendingRequest={(value)=>setTempPendingRequest(value)}
+            />
           </div>
         </div>
       </div>

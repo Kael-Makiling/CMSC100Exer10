@@ -13,7 +13,7 @@ const UserInitialState = {
     email: user?.email || '',
     friends: user?.friends || [],
     friendRequest: user?.friendRequest || [],
-    sentRequest: user?.sentRequest || [],
+    pendingRequest: user?.pendingRequest || [],
     name: user?.name || '',
     isLoggedIn: user?.isLoggedIn || false,
     _id: user?._id || ''
@@ -42,13 +42,12 @@ const UserProvider = ({children}) => {
     }
     
     const signIn = (user) => {
-        // console.log(user);
-        const { email, firstName, friendRequest, sentRequest, friends, lastName, name, _id } = user;
+        const { email, firstName, friendRequest, pendingRequest, friends, lastName, name, _id } = user;
         dispatch({type: "SIGN_IN", payload: { 
             email, 
             firstName, 
             friendRequest,
-            sentRequest, 
+            pendingRequest, 
             friends, 
             lastName, 
             _id,
@@ -57,7 +56,7 @@ const UserProvider = ({children}) => {
         addUserToStorge(user);
         navigate("/home");
     };
-    // console.log(state)
+
     return (
     <UserContext.Provider 
         value={{

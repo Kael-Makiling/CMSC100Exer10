@@ -1,34 +1,56 @@
-import React, {useState} from 'react';
+import React from 'react';
 import "./postbox.css";
 import {useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PostSchema } from '../../assets/schema';
 import { useUserAppContext } from '../../context/UserContext';
 
+//PURPOSE: This component is for posting
+//UTILIZED IN: Home and Profilepage
 
-const Postbox = ({setValue}) => {
+const Postbox = ({setPosts, numPost, setNumPost, updatePost, method}) => {
   const {register, handleSubmit, reset} = useForm({ resolver: yupResolver(PostSchema)});
   const {_id, firstName} =useUserAppContext();
-  // const [post, setPost] = useState();
   
+  //PURPOSE: Submits if post is clicked
   const submitForm = async(data) => {
     const newDate = new Date();
 
     const postBody = {createdAt:newDate, content: data.content, createdBy:_id}
     await fetch("/api/post", {method: 'POST', body: JSON.stringify(postBody), headers: { 'Content-Type' : 'application/json'}});
 
-    setValue(data.content)
-    console.log(setValue)
-    console.log(data.content)
+    const response = await fetch("/api/user/getUser/"+_id, { 
+      method: 'GET', 
+      headers: { 'Content-Type' : 'application/json'}})
+    const user = await response.json();
+    const userData = user.data;
+
+    // Since posting is used in Home and Profilepage
+    // method will be used to check where it is used
+    //if Method is not equal to 1 it is used in Profilepage
+    //if not, it is used in home
+    if (method !== 1){
+      const response2 = await fetch("/api/post/getOwnPost/"+_id, { 
+        method: 'GET', 
+        headers: { 'Content-Type' : 'application/json'}})
+      const post = await response2.json();
+      const newPosts = post.data;
+      setPosts(newPosts)
+   
+    }else{
+      const homePost = {          
+        createdAt: newDate,
+        content: data.content,
+        fullName: userData.name,
+        email: userData.email,
+        oneChar: userData.name.split('')[0]}
+      updatePost(homePost)
+    }
     reset();
+
+    //Updated Numpost for stats
+    setNumPost(numPost+1)
   }
-
-  // const handlePost = (event) => {
-  //   const content = event.target.value;
-  //   setPost(content)
-
-  //   console.log(content)
-  // }
 
   return (
     <div className='postbox-container'>
@@ -40,17 +62,12 @@ const Postbox = ({setValue}) => {
                     <input 
                       placeholder="What's on your mind?"
                       className='postbox-input'
-                      // onChange={handlePost} 
                       {...register('content')}
                     />  
                 </div>
                 <hr className='postbox-line'></hr>
                 <div className='postbox-button'> 
-                    <button 
-                    // onClick={()=>setValue(post)}
-                    >
-                        Post
-                    </button>
+                    <button>Post</button>
                 </div>
             </form>
         </div>

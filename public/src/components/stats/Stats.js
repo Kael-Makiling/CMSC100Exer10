@@ -1,25 +1,10 @@
-import {useState, useEffect} from 'react'
+import React from 'react'
 import "./stats.css";
 
-const Stats = ({_id, friendRequest, friends}) => {
-  const [numPost, setNumPost] = useState("");
+//PURPOSE: This component is used to hold the statistics of the User
+//UTILIZED IN: Sidebar
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch("/api/post/getOwnPost/"+_id, { 
-          method: 'GET', 
-          headers: { 'Content-Type' : 'application/json'}})
-        const user = await response.json();
-        const data = user.data;
-        console.log("postdata",data);
-        setNumPost(data.length)
-      } catch (er) {
-        console.log(er);
-      }
-    })()
-  },[])
-
+const Stats = ({numPost, friendRequest, friends}) => {
   return (
     <div className='sidebar-stats'>
     <div className='sidebar-stats-box'>

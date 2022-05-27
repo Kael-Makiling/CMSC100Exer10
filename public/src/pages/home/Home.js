@@ -10,27 +10,70 @@ import {
 } from "../../containers";
 import { useUserAppContext } from '../../context/UserContext';
 
+//PURPOSE: This page shows the post of the user as well as other users posts
 const Home = () => {
-  const [posts, setPosts] = useState([]);
-  const { _id, friends} = useUserAppContext();
+  //All
+  const {firstName, lastName, email, _id, friends} = useUserAppContext();
   const [loading, setLoading] = useState(true);
-  // const [numPost, setNumPost] = useState(0)
+  const [tempFriends, setTempFriends] = useState([])
+  const [tempFriendRequest, setTempFriendRequest] = useState([])
+  const [tempPendingRequest, setTempPendingRequest] = useState([])
+  const [method,setMethod] = useState(1); //If 1 Posting will be from Home
+
+  //Left SideBar
+  const [numPost, setNumPost] = useState(0);
+
+  //Middle
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
+        //Get Posts
         const idArray = new Array (_id,...friends)
-        // console.log("idArray", idArray)
         const constraint = JSON.stringify(idArray)
         const response = await fetch("/api/post/getPost/"+constraint, { 
           method: 'GET', 
           headers: { 'Content-Type' : 'application/json'}})
         const post = await response.json();
         const data = post.data;
-        setPosts(new Array(...data))
-        // setTimeout(()=>{
-        //   setLoading(false);
-        // },1000)
+
+        //Get Posts Contents
+        await Promise.all(data.map(async(item, key)=>{
+          const response2 = await fetch("/api/user/getUser/"+item.createdBy, { 
+            method: 'GET', 
+            headers: { 'Content-Type' : 'application/json'}})
+          const user = await response2.json();
+          const userData = user.data;
+
+          return({
+            createdAt: item.createdAt,
+            content: item.content,
+            fullName: userData.name,
+            email: userData.email,
+            oneChar: userData.name.split('')[0]
+          })
+        })).then((value)=>{setPosts(value)})
+        
+        //Get Self Contents
+        const response2 = await fetch("/api/user/getUser/"+_id, { 
+          method: 'GET', 
+          headers: { 'Content-Type' : 'application/json'}})
+        const self = await response2.json();
+        const dataSelf = self.data;
+        setTempFriends(dataSelf.friends)
+        setTempFriendRequest(dataSelf.friendRequest)
+        setTempPendingRequest(dataSelf.pendingRequest)
+
+        //For Numpost
+        let counter = 0;
+        for(let i = 0; i < data.length; i++){
+          if(data[i].createdBy === _id){
+            counter++;
+          }
+        }
+        setNumPost(counter)
+
       } catch (er) {
         console.log(er);
       }
@@ -39,40 +82,45 @@ const Home = () => {
   },[])
 
   return (
-    <>
-    {console.log("hello")}
-    {console.log(posts)}
-    {console.log(posts.length)}
     <div className="home-container">
-      {
-        loading ? 
-        <div className="centeredSpinner">
-            <DotLoader
-            size={80}
-            color={'#4f4a47'}
-            loading={loading}/>
-        </div>
-        :
-        <div>
           <Navbar />
+          { loading ? 
+          <div className="centeredSpinner">
+              <DotLoader
+              size={80}
+              color={'#4f4a47'}
+              loading={loading}
+              />
+          </div> : <div>
           <div className="home-wrapper">
             <div className="home-left">
               <Sidebar 
-              // numPost={numPost}
+                firstName={firstName}
+                lastName={lastName}
+                email={email}
+                _id={_id}
+                friends={tempFriends}
+                friendRequest={tempFriendRequest}
+                numPost={numPost}
               />
             </div>
             <div className="home-middle">
               <p className="home-middle-text">HOME FEED</p>
               <Postbox
-                setValue={(value)=>setPosts(new Array(...posts,value))}
+                updatePost={(value)=>setPosts(new Array(...posts,value))}
+                setNumPost={(value)=>setNumPost(value)}
+                numPost={numPost}
+                method={method}
               />
               <div className="home-middle-reversed">
                 {posts.map((item, index)=> (
                   <Timelinebox 
-                    _id={item.createdBy} 
                     date={item.createdAt} 
-                    content={item.content} 
-                    key={item.createdBy + index}
+                    content={item.content}
+                    fullName={item.fullName}
+                    email={item.email}
+                    oneChar={item.oneChar}
+                    key={item.createdAt + item.content + index}
                   />
                 ))}
               </div>
@@ -80,7 +128,13 @@ const Home = () => {
             <div className="home-right">
               <div className="home-right-contents">
                 <Creatorbox />
-                <Friendsuggestion />
+                    <Friendsuggestion 
+                    friendRequest={tempFriendRequest}
+                    _id={_id}
+                    friends={friends}
+                    tempPendingRequest={tempPendingRequest}
+                    setTempPendingRequest={(value)=>setTempPendingRequest(value)}
+                  />
                 <div className='home-right-ad'>
                   <div className="home-right-suggested">
                     <div className="suggested-container"> 
@@ -99,7 +153,6 @@ const Home = () => {
         </div>
       }
     </div>
-    </>
   );
 };
 

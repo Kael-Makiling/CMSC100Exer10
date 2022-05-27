@@ -6,37 +6,44 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Navbar = () => {
+  //For navigating to other user
   let navigate = useNavigate();
-  const { name, logOut} = useUserAppContext();
+
+  //For Logging out
+  const {name, logOut} = useUserAppContext();
   const [data, setData] = useState([])
+
+  //For Searching
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
   useEffect(() => {
     (async () => {
       try {
-        //CANT GET SENT REQUEST DATA
         const response = await fetch("/api/user/getAllUsers/", { 
           method: 'GET', 
           headers: { 'Content-Type' : 'application/json'}})
         const user = await response.json();
         const newData = user.data;
         setData(new Array(...newData))
-        // console.log(user)
-        // console.log(data);
       } catch (er) {
         console.log(er);
       }
     })()
   },[])
 
+  //PURPOSE: Filters the word. Only shows the user being searched
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
+
+    //Filtering
+    //Returns the filter that returns true
     const newFilter = data.filter((value) => {
       return value.name.toLowerCase().includes(searchWord.toLowerCase())
     });
 
+    //Sets the filtered word in the Filtered data Array
     if (searchWord === "") {
       setFilteredData([]);
     } else {
@@ -44,6 +51,8 @@ const Navbar = () => {
     }
   };
 
+
+  //PURPOSE: Input Clearing
   const clearInput = () => {
     setFilteredData([]);
     setWordEntered("");
@@ -51,8 +60,7 @@ const Navbar = () => {
 
   return (
     <div className="navbar-container">
-      {/* {console.log(data)}
-      {console.log(filteredData)} */}
+      {console.log(filteredData)}
       <div className="navbar-wrapper">
         <div className="navbar-left">
             <div className='navbar-item-container'>
@@ -86,7 +94,11 @@ const Navbar = () => {
               <div className="dataResult">
                 {filteredData.map((value, key) => {
                   return (
-                    <div className="dataItem" key={value.name + key} onClick={()=>{navigate('/friendsprofilepage',{state:{id:value._id,name:value.name}})}}>
+                    <div className="dataItem" 
+                      key={value.name + key} 
+                      onClick={()=>{navigate('/friendsprofilepage',
+                          {state:{id:value._id,name:value.name,email:value.email}}
+                          )}}>
                       <p className="dataItem_values">{value.name} </p>
                     </div>
                   );

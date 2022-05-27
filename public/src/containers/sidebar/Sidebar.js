@@ -1,57 +1,59 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 import "./sidebar.css";
-import { useUserAppContext } from '../../context/UserContext';
-import { Profilebox, Stats, Addfriend, Friendrequest } from '../../components'
+import { Profilebox, Stats, Friends, Friendrequest } from '../../components'
+import MoonLoader from 'react-spinners/MoonLoader';
 
 
-const Sidebar = () => {
-  const {firstName, lastName, email, _id, friendRequest, friends} = useUserAppContext();
-  const [friendsArray, setFriendsArray] = useState([]);
-  const [friendRequestArray, setfriendRequestArray] = useState([]);
-  const [tempUser, setTempUser] = useState("")
-  const [acceptState, setAcceptState] = useState("") //If 1 - Accept, 2 - Reject
+//PURPOSE: This component is used to hold all the informations of the users
+//          from personal information, statistics, friends and friend requests
+const Sidebar = ({firstName, lastName, email, _id, numPost, friends, friendRequest}) => {
+    const [friendsArray, setFriendsArray] = useState([]);
+    const [friendRequestArray, setfriendRequestArray] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  const handleAccept = () => {
-    console.log("accept");
-    console.log("friend_id", tempUser)
-    var tempArray = [...friendRequestArray]; // make a separate copy of the array
-    var index = tempArray.indexOf(tempUser)
-    if (index !== -1) {
-      tempArray.splice(index, 1);
-      setfriendRequestArray(new Array (...tempArray));
-    }
-
-    //Add Friend to Friends Array
-    setFriendsArray(new Array (...friendsArray, tempUser))
-  }
-
-  const handleReject = () => {
-    var tempArray = [...friendRequestArray]; // make a separate copy of the array
-    var index = tempArray.indexOf(tempUser)
-    if (index !== -1) {
-      tempArray.splice(index, 1);
-      setfriendRequestArray(new Array (...tempArray));
-    }
-  }
-  useEffect(() => {
-    (async () => {
-      try {
-        if (friendRequestArray.length === 0){
-          setFriendsArray(new Array(...friends))
-          setfriendRequestArray(new Array(...friendRequest))
-        } else {
-          if (acceptState === "1"){
-            handleAccept()
-          }else{
-            handleReject()
+    //PURPOSE: Set the array for friends and friendrequest
+    useEffect(()=>{
+      (async () => {
+        try {
+              //For Friends
+              await Promise.all(friends.map(async(item, key)=>{
+                const response2 = await fetch("/api/user/getUser/"+item, { 
+                  method: 'GET', 
+                  headers: { 'Content-Type' : 'application/json'}})
+                const user = await response2.json();
+                const userData = user.data;
+                return({
+                  fullName: userData.name,
+                  email: userData.email,
+                  oneChar: userData.name.split('')[0],
+                  friend_id:userData._id
+                })
+              })).then((value)=>{setFriendsArray(value)})
+      
+              //For Friend Requests
+              await Promise.all(friendRequest.map(async(item, key)=>{
+                const response2 = await fetch("/api/user/getUser/"+item, { 
+                  method: 'GET', 
+                  headers: { 'Content-Type' : 'application/json'}})
+                const user = await response2.json();
+                const userData = user.data;
+                return({
+                  fullName: userData.name,
+                  email: userData.email,
+                  _id: userData._id,
+                  oneChar: userData.name.split('')[0]
+                })
+              })).then((value)=>{setfriendRequestArray(value)})
+          } catch (er) {
+            console.log(er);
           }
-        }
-      } catch (er) {
-        console.log(er);
-      }
-    })()
-  },[tempUser])
+          setLoading(false)
+      })()
+    },[])
 
+    
+    //Only shows friends or friend request when they are not empty
+    //Shows after loading of data
   return (
     <div className='sidebar-container'>
         <div className='sidebar-wrapper'>
@@ -60,36 +62,41 @@ const Sidebar = () => {
               lastName={lastName}
               email={email}
             />
-
-            <Stats 
-              _id={_id}
-              friendRequest={friendRequestArray}
-              friends={friendsArray}
-            />
-
-            <div className='sidebar-wrapper-contents'>
-
-            {(friendsArray.length !== 0 ?
-              <div>
-                <Addfriend 
-                friends={friendsArray}            
+            {loading ? 
+              <div className="sidebarSpinner">
+                <MoonLoader
+                size={40}
+                color={'#4f4a47'}
+                loading={loading}
                 />
-              </div> : <div></div>
-            )}
-
-            {(friendRequestArray.length !== 0 ?
-              <div>
-                <Friendrequest
-                _id={_id}
-                friendRequest={friendRequestArray}
-                setValue={(value)=>setTempUser(value)}
-                setState={(value)=>setAcceptState(value)}
+              </div>:<>
+              <div className='sidebar-wrapper-contents'>
+                <Stats 
+                  numPost={numPost}
+                  friendRequest={friendRequestArray}
+                  friends={friendsArray}
                 />
-              </div> : <div></div>
-            )}
-
-            </div>
-            
+                {(friendsArray.length !== 0 ?
+                  <div>
+                    <Friends
+                    friendsArray={friendsArray}            
+                    />
+                  </div>:<div></div>
+                )}
+                {(friendRequestArray.length !== 0 ?
+                  <div>
+                    <Friendrequest
+                    _id={_id}
+                    friendRequestArray={friendRequestArray}
+                    friendsArray={friendsArray} 
+                    setfriendRequestArray={(value)=>setfriendRequestArray(value)}
+                    setFriendsArray={(value)=>setFriendsArray(value)}
+                    />
+                  </div> : <div></div>
+                )}
+              </div>
+              </>
+            }
         </div>
     </div>
   )

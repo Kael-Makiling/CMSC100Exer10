@@ -1,36 +1,44 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import "./ownpostbox.css";
 import Miniprofile from '../miniprofile/Miniprofile';
 import {FaTrashAlt, FaEdit, FaBan} from "react-icons/fa";
 import Moment from 'moment';
-const Ownpostbox = ({_id, date, content, createdBy }) => {
-    const [editing,setEditing] = useState(false);
+
+//PURPOSE:This component is for editing and deleting of own post
+//UTILIZED IN: Profilepage
+//Buttons: For Edit and Delete
+
+const Ownpostbox = ({_id, date, content, fullName, email, oneChar, numPost, setNumPost, setPosts,posts }) => {
     const [ newContent, setNewContent] = useState("");
     const [ tempContent, setTempContent] = useState("");
 
-    useEffect (()=>{
-        if (tempContent===""){
-            setTempContent(content)
-        }
-    },[tempContent])
+    //If editing is true, it means the user can edit the post since the post will become a text field
+    //If false it will be a normal post box
+    const [editing,setEditing] = useState(false);
 
+    //PURPOSE: Deletes own Post
+    //          Deletes post from database
     const handleDelete = async()=>{
-        console.log("hatdog");
-        try {
-            await fetch("/api/post/deletePost/"+_id, { 
-              method: 'POST', 
-              headers: { 'Content-Type' : 'application/json'}})
-        } catch (er) {
-        console.log(er);
+        await fetch("/api/post/deletePost/"+_id, 
+            {method: 'POST',
+            headers: { 'Content-Type' : 'application/json'}});  
+        let tempArray = [...posts]; // make a separate copy of the array
+        const index = tempArray.map(object => object._id).indexOf(_id);
+        if (index !== -1) {
+            tempArray.splice(index, 1);
+            setPosts(tempArray);
         }
+        setNumPost(numPost-1)
     }
+
+    //PURPOSE: Edits own Post
+    //         Update post from database
 
     const handleSubmit = async() => {
         await fetch("/api/post/editPost/"+_id+"/"+newContent, 
             {method: 'POST',
             headers: { 'Content-Type' : 'application/json'}});  
         setTempContent(newContent)
-        console.log(newContent)
     }
 
     const formatted_date = Moment(date).format("MMM Do YY");  
@@ -40,7 +48,11 @@ const Ownpostbox = ({_id, date, content, createdBy }) => {
                 <div className='owntimelinebox-firstpart'>
                     <div className='timelinebox-firstpart-left'>
                         <div className='timelinebox-miniprofile'>
-                            <Miniprofile _id={createdBy}/>
+                            <Miniprofile
+                                fullName={fullName}
+                                email={email}
+                                oneChar={oneChar}
+                            />
                         </div>
                         <div className='timelinebox-time'>
                             <p className='timelinebox-time-text'> {formatted_date} </p>
@@ -49,7 +61,7 @@ const Ownpostbox = ({_id, date, content, createdBy }) => {
                     <div className='timelinebox-firstpart-right'>
                         {!editing ?
                             <div className="timelinebox-firstpart-right-icon">  
-                                <FaEdit onClick={()=>{setEditing(true);setNewContent(content)}}/>
+                                <FaEdit onClick={()=>{setEditing(true);setNewContent(content);setTempContent(content)}}/>
                                 <FaTrashAlt onClick={handleDelete}/> 
                             </div> :
                             <div>
@@ -60,7 +72,12 @@ const Ownpostbox = ({_id, date, content, createdBy }) => {
                 </div>
                 <div className='timelinebox-secondpart'>
                     {!editing ? 
-                        <p className='timelinebox-text'>{tempContent} </p> :
+                        <p className='timelinebox-text'>
+                            {
+                                tempContent.length === 0 ?
+                                <>{content}</> : <>{tempContent}</>
+                            }
+                        </p> :
                         <div className='timelinebox-editing'>
                             <input 
                                 type = "text"

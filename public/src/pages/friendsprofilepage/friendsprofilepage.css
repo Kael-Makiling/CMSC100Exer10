@@ -38,13 +38,32 @@
 }
 
 .home-middle-text {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  row-gap: 5px;
+}
+
+.normal-text{
+
   color: var(--color-dark);
   font-weight: bold;
   letter-spacing: 7px;
   font-size: 25px;
 
-  margin-top: 100px;
+  margin-top: 0px;
   margin-bottom: 0px;
 
   text-align: left;
+}
+
+.small-text{
+  color: var(--color-dark);
+  font-weight: bold;
+
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  text-align: left;
+  font-size: 10px;
 }

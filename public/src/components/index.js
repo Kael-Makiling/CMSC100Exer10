@@ -1,9 +1,7 @@
-export { default as Addfriend } from './addfriend/Addfriend';
-export { default as Buttons } from './buttons/Buttons';
-export { default as Friendbox } from './friendbox/Friendbox';
 export { default as Friendrequest } from './friendrequest/Friendrequest';
-export { default as Friendsprofilebox } from './friendsprofilebox/Friendsprofilebox';
+export { default as Friends } from './friends/Friends';
 export { default as Miniprofile } from './miniprofile/Miniprofile';
+export { default as Miniprofilefr } from './miniprofilefr/Miniprofilefr';
 export { default as Miniprofilesugg } from './miniprofilesugg/Miniprofilesugg';
 export { default as Ownpostbox } from './ownpostbox/Ownpostbox';
 export { default as Postbox } from './postbox/Postbox';

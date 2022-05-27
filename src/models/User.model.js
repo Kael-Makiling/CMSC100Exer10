@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
         default: [],
         uniqueItems: true,
     },
-    sentRequest:{
+    pendingRequest:{
         type : Array,
         items: {dropDups: true},
         default: [],

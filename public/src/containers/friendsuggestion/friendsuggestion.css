@@ -15,6 +15,14 @@
   border-radius: 10px;
 }
 
+.suggSpinner{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 225px;
+  height: 100px;
+}
+
 .friendsuggestion-firstpart {
   display: flex;
 
